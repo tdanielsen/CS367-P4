@@ -21,8 +21,6 @@ public class BinaryTreeTester
 		tree.goRight();
 //		tree.changeCurrent("Hat");
 //		tree.print();
-		tree = null;
-		tree.print();
 
 	}
 
