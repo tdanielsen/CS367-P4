@@ -11,10 +11,10 @@ public class GuessingGame
 	public static void main(String[] args) throws IllegalBinaryTreeOpException, IOException
 	{
 		BinaryTree<String> questionTree = new BinaryTree<String>();
-		boolean endAll = false;
-		if (args.length == 2)
+		boolean endAll = true;
+		if (args.length == 1)
 		{
-			String fileName = args[1];
+			String fileName = args[0];
 			try
 			{
 				BufferedReader in
@@ -33,8 +33,6 @@ public class GuessingGame
 	                	{
 	                		System.out.println("Empty Tree");
 	                	}
-	                	
-	                    break;
 					}
 					if (line.equalsIgnoreCase("p"))
 					{
@@ -47,15 +45,14 @@ public class GuessingGame
 	                	{
 	                		questionTree = restartFile(in, questionTree);
 	                	}
-	                    break;
 					}
 					if (line.equalsIgnoreCase("r"))
 					{
-						
+						questionTree = restartFile(in, questionTree);
 					}
 					if (line.equalsIgnoreCase("q"))
 					{
-						endAll = true;
+						endAll = false;
 						break;
 					}
 				}
@@ -136,9 +133,54 @@ public class GuessingGame
     	return tree;
 	}
 	private static void playFile(BufferedReader in,
-			BinaryTree<String> questionTree)
+			BinaryTree<String> tree) throws IllegalBinaryTreeOpException, IOException
 	{
-		// TODO Auto-generated method stub
+		String input = "";
+		boolean guessingInProgress = true;
+		tree.start();
+		while (guessingInProgress)
+		{
+			if (tree.isLeaf())
+			{
+				System.out.println("I guess: " + tree.getCurrent() + ". Was I right?");
+				input = in.readLine();
+				if (input.equalsIgnoreCase("y"))
+				{
+					System.out.println("I win.");
+				}
+				if (input.equalsIgnoreCase("n"))
+				{
+					failedGuessFile(in, tree);
+				}
+				guessingInProgress = false;
+			}
+			else
+			{
+				System.out.println(tree.getCurrent());
+				input = in.readLine();
+				if (input.equalsIgnoreCase("y"))
+				{
+					tree.goLeft();
+				}
+				if (input.equalsIgnoreCase("n"))
+				{
+					tree.goRight();
+				}
+			}
+		}
+		
+	}
+	private static void failedGuessFile(BufferedReader in, BinaryTree<String> tree) throws IllegalBinaryTreeOpException, IOException
+	{
+		String input = "";
+		String oldAnswer = tree.getCurrent();
+		System.out.println("Darn. Ok, tell me a question that is true for your answer, but false for my guess.");
+		input = in.readLine();
+		tree.changeCurrent(input);
+		System.out.println("Thanks. And what were you thinking of?");
+		input = in.readLine();
+		tree.addLeftChild(input);
+		tree.addRightChild(oldAnswer);
 		
 	}
 	private static BinaryTree<String> restart(Scanner scanner, BinaryTree<String> tree) throws IllegalBinaryTreeOpException
@@ -158,6 +200,7 @@ public class GuessingGame
 	private static void play(Scanner scanner, BinaryTree<String> tree) throws IllegalBinaryTreeOpException
 	{
 		String input = "";
+		tree.start();
 		boolean guessingInProgress = true;
 		while (guessingInProgress)
 		{

@@ -31,7 +31,7 @@ public class BinaryTree<E>
 		{
 			throw new IllegalBinaryTreeOpException("No left child");
 		}
-		ref = root.getLeft();
+		ref = ref.getLeft();
 	}
 	public void goRight() throws IllegalBinaryTreeOpException
 	{
@@ -39,7 +39,7 @@ public class BinaryTree<E>
 		{
 			throw new IllegalBinaryTreeOpException("No right child");
 		}
-		ref = root.getRight();
+		ref = ref.getRight();
 	}
 	public boolean isLeaf()
 	{
@@ -78,7 +78,7 @@ public class BinaryTree<E>
 	{
 		System.out.println(ref.getData());
 		blank = blank + "   ";
-		if (ref.getLeft() != null)
+		if (ref.getLeft() != null && ref.getRight() != null)
 		{
 			System.out.print(blank);
 			print(ref.getLeft(), blank);

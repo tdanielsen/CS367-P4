@@ -16,6 +16,9 @@ public class BinaryTreeTester
 		tree.goRight();
 		tree.addRightChild("F");
 		tree.addLeftChild("R");
+		tree.goRight();
+		tree.addLeftChild("Gloop");
+		tree.addRightChild("Zork");
 		tree.print();
 		tree.start();
 		tree.goRight();
